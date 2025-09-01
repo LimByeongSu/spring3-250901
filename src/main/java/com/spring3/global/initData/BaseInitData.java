@@ -1,5 +1,6 @@
 package com.spring3.global.initData;
 
+import com.spring3.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
@@ -14,11 +15,19 @@ public class BaseInitData {
     @Autowired
     @Lazy
     private BaseInitData self;
+    private final PostService postService;
 
     @Bean
     ApplicationRunner initDataRunner() {
         return args -> {
 
+            if(postService.count() > 0) {
+                return;
+            }
+
+            postService.write("제목1", "내용1");
+            postService.write("제목2", "내용2");
+            postService.write("제목3", "내용3");
         };
 
     }
