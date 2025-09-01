@@ -4,6 +4,7 @@ import com.spring3.domain.post.post.entity.Post;
 import com.spring3.domain.post.post.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -22,7 +23,7 @@ public class PostController {
 
         //https://localhost:8080/posts/doWrite 로 적어도 되지만 시작과 끝이 localhost8080서버로 같다면 생략가능
         return """
-                <form action="/posts/doWrite">
+                <form method="POST" action="/posts/doWrite">
                   <input type="text" name="title">
                   <br>
                   <textarea name="content"></textarea>
@@ -32,7 +33,7 @@ public class PostController {
                 """;
     }
 
-    @GetMapping("/posts/doWrite")
+    @PostMapping("/posts/doWrite")
     @ResponseBody
     public String doWrite(
             String title,
@@ -43,5 +44,4 @@ public class PostController {
 
         return "%d번 글이 작성되었습니다.".formatted(post.getId());
     }
-
 }
