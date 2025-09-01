@@ -40,6 +40,13 @@ public class PostController {
             String content
     ) {
 
+        if(title.isBlank()){
+            return "제목을 입력해주세요";
+        }
+        if(content.isBlank()){
+            return "제목을 입력해주세요";
+        }
+
         Post post = postService.write(title, content);
 
         return "%d번 글이 작성되었습니다.".formatted(post.getId());
