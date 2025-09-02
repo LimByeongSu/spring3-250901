@@ -58,12 +58,12 @@ public class PostController {
     @AllArgsConstructor
     @Getter
     public static class PostWriteForm{
-        @NotBlank
-        @Size(min = 2, max = 10)
+        @NotBlank(message = "제목을 입력해주세요.")
+        @Size(min = 2, max = 10, message = "제목은 2글자 이상 10글자 이하로 입력해주세요.")
         private String title;
 
-        @NotBlank
-        @Size(min = 2, max = 100)
+        @NotBlank(message = "내용을 입력해주세요.")
+        @Size(min = 2, max = 100, message = "내용은 2글자 이상 100글자 이하로 입력해주세요.")
         private String content;
     }
 
