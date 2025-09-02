@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,9 +25,11 @@ public class PostController {
         this.postService = postService;
     }
 
-    private String getWriteFormHtml(String errorMessage, String title, String content, String errorFieldName){
+    private String getWriteFormHtml(String errorMessage, String title, String content){
         return """
-                <div>%s</div>
+                <ul>
+                    %s
+                </ul>
                 <form method="POST" action="/posts/doWrite">
                   <input type="text" name="title" value="%s" autoFocus>
                   <br>
@@ -38,14 +39,15 @@ public class PostController {
                 </form>
                 
                 <script>
-                    const errorFieldName = "%s";
+                    const li = document.querySelector("ul li");
+                    const errorFieldName = li.dataset.errorFieldName;
                 
                     if(errorFieldName.length > 0) {
                     const form = document.querySelector("form");
                     form[errorFieldName].focus();
                 }
                 </script>
-                """.formatted(errorMessage, title, content, errorFieldName);
+                """.formatted(errorMessage, title, content);
 
     }
 
@@ -54,7 +56,7 @@ public class PostController {
     public String write() {
 
         //https://localhost:8080/posts/doWrite 로 적어도 되지만 시작과 끝이 localhost8080서버로 같다면 생략가능
-        return getWriteFormHtml("", "", "", "");
+        return getWriteFormHtml("", "", "");
     }
 
     @AllArgsConstructor
@@ -79,14 +81,17 @@ public class PostController {
     ) {
         if(bindingResult.hasErrors()) {  // 결과에 에러가 있는가를 물어본다.
 
-            String fieldName = "title";
-
-            String errorMessages = bindingResult.getFieldErrors().stream()
-                    .map(FieldError::getDefaultMessage)
+            String errorMessages = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(field -> field.getField() + "-" + field.getDefaultMessage())
+                    .map(message -> message.split("-"))
+                    .map(bits -> """
+                            <!-- %s --><li data-error-field-name="%s">%s</li>
+                            """.formatted(bits[1], bits[0], bits[2]))
                     .sorted()
-                    .collect(Collectors.joining("<br>"));//"\n"은 자바에서 줄바꿈이고 에러메세지는 html에서 쓸거라 <br>을 해야함
+                    .collect(Collectors.joining("\n"));//"\n"은 자바에서 줄바꿈이고 에러메세지는 html에서 쓸거라 <br>을 해야함
 
-            return getWriteFormHtml(errorMessages, form.title, form.content, fieldName);
+            return getWriteFormHtml(errorMessages, form.title, form.content);
         }
 
         Post post = postService.write(form.title, form.content);
