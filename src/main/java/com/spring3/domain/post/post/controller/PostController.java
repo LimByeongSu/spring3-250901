@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,8 +73,18 @@ public class PostController {
             @ModelAttribute("postWriteForm") @Valid PostWriteForm form //PostWriteForm객체 안에 있는 값들을 매개변수로 받으라는 의미다.
             //참고로 @ModelAttribute("이름")의 이름은 객체의 앞글자를 소문자로 바꾼 postWriteForm 이다.
             // 내가 지정안해도 스프링이 postWriteForm으로 지정한다.
-            , BindingResult result
+            , BindingResult bindingResult
     ) {
+        if(bindingResult.hasErrors()) {  // 결과에 에러가 있는가를 물어본다.
+            FieldError fieldError = bindingResult.getFieldError();  //에러가 난 field를 갖고온다.
+            String fieldName = fieldError.getField();   //내 프로그램의 경우 field는 title, content이다.
+            String errorMessage = fieldError.getDefaultMessage();
+
+            System.out.println("fieldName"+fieldName);
+            System.out.println( "errorMessage"+ errorMessage);
+
+            return getWriteFormHtml(errorMessage, form.title, form.content, fieldName);
+        }
 
         /*if(title.isBlank()){
             return getWriteFormHtml("제목을 입력해 주세요", title, content, "title");
