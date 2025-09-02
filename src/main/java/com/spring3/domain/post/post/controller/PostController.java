@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -51,6 +52,7 @@ public class PostController {
             //참고로 @ModelAttribute("이름")의 이름은 객체의 앞글자를 소문자로 바꾼 postWriteForm 이다.
             // 내가 지정안해도 스프링이 postWriteForm으로 지정한다.
             , BindingResult bindingResult
+            , Model model
     ) {
         if(bindingResult.hasErrors()) {  // 결과에 에러가 있는가를 물어본다.
 
@@ -64,11 +66,15 @@ public class PostController {
                     .sorted()
                     .collect(Collectors.joining("\n"));//"\n"은 자바에서 줄바꿈이고 에러메세지는 html에서 쓸거라 <br>을 해야함
 
+            model.addAttribute("errorMessages", errorMessages);
+
             return "post/write";
         }
 
         Post post = postService.write(form.title, form.content);
 
-        return "%d번 글이 작성되었습니다.".formatted(post.getId());
+
+        model.addAttribute("id", post.getId());
+        return "post/writeDone";
     }
 }
