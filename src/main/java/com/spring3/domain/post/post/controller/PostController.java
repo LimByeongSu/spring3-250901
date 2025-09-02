@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.stream.Collectors;
 
@@ -25,38 +24,12 @@ public class PostController {
         this.postService = postService;
     }
 
-    private String getWriteFormHtml(String errorMessage, String title, String content){
-        return """
-                <ul>
-                    %s
-                </ul>
-                <form method="POST" action="/posts/doWrite">
-                  <input type="text" name="title" value="%s" autoFocus>
-                  <br>
-                  <textarea name="content">%s</textarea>
-                  <br>
-                  <input type="submit" value="작성">
-                </form>
-                
-                <script>
-                    const li = document.querySelector("ul li");
-                    const errorFieldName = li.dataset.errorFieldName;
-                
-                    if(errorFieldName.length > 0) {
-                    const form = document.querySelector("form");
-                    form[errorFieldName].focus();
-                }
-                </script>
-                """.formatted(errorMessage, title, content);
-
-    }
-
     @GetMapping("/posts/write")
-    @ResponseBody
+    //@ResponseBody  ->  문자열을 리턴할때 사용하는것이라 지움
     public String write() {
 
         //https://localhost:8080/posts/doWrite 로 적어도 되지만 시작과 끝이 localhost8080서버로 같다면 생략가능
-        return getWriteFormHtml("", "", "");
+        return "post/write";
     }
 
     @AllArgsConstructor
@@ -72,7 +45,7 @@ public class PostController {
     }
 
     @PostMapping("/posts/doWrite")
-    @ResponseBody
+    //@ResponseBody ->  문자열을 리턴할때 사용하는것이라 지움
     public String doWrite(
             @ModelAttribute("postWriteForm") @Valid PostWriteForm form //PostWriteForm객체 안에 있는 값들을 매개변수로 받으라는 의미다.
             //참고로 @ModelAttribute("이름")의 이름은 객체의 앞글자를 소문자로 바꾼 postWriteForm 이다.
@@ -91,7 +64,7 @@ public class PostController {
                     .sorted()
                     .collect(Collectors.joining("\n"));//"\n"은 자바에서 줄바꿈이고 에러메세지는 html에서 쓸거라 <br>을 해야함
 
-            return getWriteFormHtml(errorMessages, form.title, form.content);
+            return "post/write";
         }
 
         Post post = postService.write(form.title, form.content);
