@@ -26,10 +26,8 @@ public class PostController {
     }
 
     @GetMapping("/posts/write")
-    //@ResponseBody  ->  문자열을 리턴할때 사용하는것이라 지움
-    public String write() {
+    public String write(@ModelAttribute("postWriteForm") PostWriteForm form) {
 
-        //https://localhost:8080/posts/doWrite 로 적어도 되지만 시작과 끝이 localhost8080서버로 같다면 생략가능
         return "post/write";
     }
 
@@ -46,7 +44,6 @@ public class PostController {
     }
 
     @PostMapping("/posts/doWrite")
-    //@ResponseBody ->  문자열을 리턴할때 사용하는것이라 지움
     public String doWrite(
             @ModelAttribute("postWriteForm") @Valid PostWriteForm form //PostWriteForm객체 안에 있는 값들을 매개변수로 받으라는 의미다.
             //참고로 @ModelAttribute("이름")의 이름은 객체의 앞글자를 소문자로 바꾼 postWriteForm 이다.
@@ -67,6 +64,8 @@ public class PostController {
                     .collect(Collectors.joining("\n"));//"\n"은 자바에서 줄바꿈이고 에러메세지는 html에서 쓸거라 <br>을 해야함
 
             model.addAttribute("errorMessages", errorMessages);
+            //model.addAttribute("form", form);
+            //@ModelAttribute가 붙어있는건 따로 넘길필요없고 form은 이미 @ModelAttribute가 붙어있다.
 
             return "post/write";
         }
