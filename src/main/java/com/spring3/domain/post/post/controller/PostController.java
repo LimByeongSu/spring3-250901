@@ -16,17 +16,17 @@ public class PostController {
         this.postService = postService;
     }
 
-    private String getWriteFormHtml(String errorMessage){
+    private String getWriteFormHtml(String errorMessage, String title, String content){
         return """
                 <div>%s</div>
                 <form method="POST" action="/posts/doWrite">
-                  <input type="text" name="title">
+                  <input type="text" name="title" value="%s" autoFocus>
                   <br>
-                  <textarea name="content"></textarea>
+                  <textarea name="content">%s</textarea>
                   <br>
                   <input type="submit" value="작성">
                 </form>
-                """.formatted(errorMessage);
+                """.formatted(errorMessage, title, content);
     }
 
     @GetMapping("/posts/write")
@@ -34,7 +34,7 @@ public class PostController {
     public String write() {
 
         //https://localhost:8080/posts/doWrite 로 적어도 되지만 시작과 끝이 localhost8080서버로 같다면 생략가능
-        return getWriteFormHtml("");
+        return getWriteFormHtml("", "", "");
     }
 
     @PostMapping("/posts/doWrite")
@@ -45,10 +45,10 @@ public class PostController {
     ) {
 
         if(title.isBlank()){
-            return getWriteFormHtml("제목을 입력해 주세요");
+            return getWriteFormHtml("제목을 입력해 주세요", title, content);
         }
         if(content.isBlank()){
-            return getWriteFormHtml("내용을 입력해 주세요");
+            return getWriteFormHtml("내용을 입력해 주세요", title, content);
         }
 
         Post post = postService.write(title, content);
