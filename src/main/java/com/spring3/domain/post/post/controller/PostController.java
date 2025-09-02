@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.stream.Collectors;
+
 @Controller
 public class PostController {
 
@@ -76,14 +78,14 @@ public class PostController {
             , BindingResult bindingResult
     ) {
         if(bindingResult.hasErrors()) {  // 결과에 에러가 있는가를 물어본다.
-            FieldError fieldError = bindingResult.getFieldError();  //에러가 난 field를 갖고온다.
-            String fieldName = fieldError.getField();   //내 프로그램의 경우 field는 title, content이다.
-            String errorMessage = fieldError.getDefaultMessage();
 
-            System.out.println("fieldName"+fieldName);
-            System.out.println( "errorMessage"+ errorMessage);
+            String fieldName = "title";
 
-            return getWriteFormHtml(errorMessage, form.title, form.content, fieldName);
+            String errorMessages = bindingResult.getFieldErrors().stream()
+                    .map(FieldError::getDefaultMessage)
+                    .collect(Collectors.joining("<br>"));//"\n"은 자바에서 줄바꿈이고 에러메세지는 html에서 쓸거라 <br>을 해야함
+
+            return getWriteFormHtml(errorMessages, form.title, form.content, fieldName);
         }
 
         /*if(title.isBlank()){
