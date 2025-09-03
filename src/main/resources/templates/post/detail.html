@@ -10,5 +10,12 @@
 <h2>번호 : <th:block th:text="${post.id}">번호</th:block></h2>
 <h2>제목 : <th:block th:text="${post.title}">제목</th:block></h2>
 <h2>내용 : <div th:text="${post.content}">내용</div></h2>
+
+<div>
+    <a href="/posts">글 목록</a>
+    <a th:href="@{/posts/{id}/modify(id=${post.id})}">수정</a> <!--- "/posts/1/modify" --->
+    <a th:href="@{/posts/{id}/delete(id=${post.id})}">삭제</a> <!--- "/posts/1/detail" --->
+</div>
+
 </body>
 </html>

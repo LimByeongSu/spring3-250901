@@ -63,10 +63,7 @@ public class PostController {
 
 
         model.addAttribute("id", post.getId());
-        //return "post/writeDone";    //글 등록을 완료하고 완료 페이지로 감
-        return "redirect:/posts/write";  // 주소를 바꿈 -> return "posts/write"랑 뭐가다른거지?
-                                        //redirect는 GET요청으로 들어간다.
-                                        //return "posts/write"은 Post요청인가? 무슨차이지
+        return "redirect:/posts/%d".formatted(post.getId());
     }
 
     @GetMapping("/posts/{id}")
