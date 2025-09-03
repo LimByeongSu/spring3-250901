@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.stream.Collectors;
-
 @Controller
 public class PostController {
 
@@ -53,17 +51,7 @@ public class PostController {
     ) {
         if(bindingResult.hasErrors()) {  // 결과에 에러가 있는가를 물어본다.
 
-            String errorMessages = bindingResult.getFieldErrors()
-                    .stream()
-                    .map(field -> field.getField() + "-" + field.getDefaultMessage())
-                    .map(message -> message.split("-"))
-                    .map(bits -> """
-                            <!-- %s --><li data-error-field-name="%s">%s</li>
-                            """.formatted(bits[1], bits[0], bits[2]))
-                    .sorted()
-                    .collect(Collectors.joining("\n"));//"\n"은 자바에서 줄바꿈이고 에러메세지는 html에서 쓸거라 <br>을 해야함
 
-            model.addAttribute("errorMessages", errorMessages);
             //model.addAttribute("form", form);
             //@ModelAttribute가 붙어있는건 따로 넘길필요없고 form은 이미 @ModelAttribute가 붙어있다.
 
