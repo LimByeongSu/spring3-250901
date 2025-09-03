@@ -9,7 +9,16 @@
 
 <form method="POST" action="/posts/doWrite" th:object="${form}">
     <ul th:if="${#fields.hasAnyErrors()}" style="color:red">
-        <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+        <!--- 타임리프식 변수 선언 --->
+        <li th:each="err : ${#fields.allErrors().stream().sorted()}"
+
+            th:with="
+            errBits=${err.split('-')},
+            errorFieldName=${errBits[1]},
+            errorMessage=${errBits[2]}"
+
+            th:data-error-field-name="${errorFieldName}"
+            th:text="${errorMessage}"></li>
     </ul>
 
     <div>
