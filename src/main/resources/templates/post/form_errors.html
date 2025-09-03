@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="formErrorsFragment">
+    <ul th:if="${#fields.hasAnyErrors()}" style="color:red">
+        <!--- 타임리프식 변수 선언 --->
+        <li th:each="err : ${#fields.allErrors().stream().sorted()}"
+            th:with="
+                errBits=${err.split('-')},
+                errorFieldName=${errBits[1]},
+                errorMessage=${errBits[2]}"
+
+            th:data-error-field-name="${errorFieldName}"
+            th:text="${errorMessage}"></li>
+    </ul>
+
+    <!-- 마우스 포커스를 맞추는 작업을 자바 스크립트를 통해 한다. --->
+    <script>
+        const li = document.querySelector("ul li");
+        const errorFieldName = li.dataset.errorFieldName;
+
+        if(errorFieldName.length > 0) {
+            const form = document.querySelector("form");
+
+            setTimeout(() => {
+                form[errorFieldName].focus();
+            }, 1);
+        }
+    </script>
+</div>
+</body>
+</html>
