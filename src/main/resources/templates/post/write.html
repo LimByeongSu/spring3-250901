@@ -7,6 +7,7 @@
 <body>
 
 
+
 <form method="POST" action="/posts/write" th:object="${form}">
     <!-- post/form_errors의  formErrorsFragment로 replace한다.--->
     <div th:replace="~{post/form_errors :: formErrorsFragment}"></div>
