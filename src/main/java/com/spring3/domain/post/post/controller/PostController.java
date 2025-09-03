@@ -41,7 +41,7 @@ public class PostController {
         private String content;
     }
 
-    @PostMapping("/posts/doWrite")
+    @PostMapping("/posts/write")
     public String doWrite(
             @ModelAttribute("form") @Valid PostWriteForm form //PostWriteForm객체 안에 있는 값들을 매개변수로 받으라는 의미다.
             //참고로 @ModelAttribute("이름")의 이름은 객체의 앞글자를 소문자로 바꾼 postWriteForm 이다.
