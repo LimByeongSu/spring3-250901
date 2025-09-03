@@ -74,11 +74,10 @@ public class PostController {
     }
     
     @GetMapping("/posts")
-    @ResponseBody
-    public List<Post> list(Model model){   //글 목록
+    public String list(Model model){   //글 목록
         List<Post> posts = postService.findAll();
-        return posts;
-        /*model.addAttribute("posts", posts);
-        return "posts/list";*/
+
+        model.addAttribute("posts", posts);
+        return "post/list";
     }
 }
