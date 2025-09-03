@@ -6,6 +6,8 @@ import com.spring3.domain.post.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -21,4 +23,7 @@ public class PostService {
         return postRepository.count();
     }
 
+    public Optional<Post> findById(Long id) {
+        return postRepository.findById(id);
+    }
 }
