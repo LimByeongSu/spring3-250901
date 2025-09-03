@@ -8,18 +8,8 @@
 
 
 <form method="POST" action="/posts/doWrite" th:object="${form}">
-    <ul th:if="${#fields.hasAnyErrors()}" style="color:red">
-        <!--- 타임리프식 변수 선언 --->
-        <li th:each="err : ${#fields.allErrors().stream().sorted()}"
-
-            th:with="
-            errBits=${err.split('-')},
-            errorFieldName=${errBits[1]},
-            errorMessage=${errBits[2]}"
-
-            th:data-error-field-name="${errorFieldName}"
-            th:text="${errorMessage}"></li>
-    </ul>
+    <!-- post/form_errors의  formErrorsFragment로 replace한다.--->
+    <div th:replace="~{post/form_errors :: formErrorsFragment}"></div>
 
     <div>
         <label for="title">제목 : </label> <!-- for의 값은 name이 아니고 id값을 넣어야한다. --->
@@ -34,14 +24,5 @@
     <input type="submit" value="작성">
 </form>
 
-<script>
-    const li = document.querySelector("ul li");
-    const errorFieldName = li.dataset.errorFieldName;
-
-    if(errorFieldName.length > 0) {
-        const form = document.querySelector("form");
-        form[errorFieldName].focus();
-    }
-</script>
 </body>
 </html>
