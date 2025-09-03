@@ -33,6 +33,10 @@ public class PostService {
     }
 
     public void modify(Post post, String title, String content) {
-        post.update(title, content);
+        post.update(title, content); //-> 이걸 쓰려면 @Transactional을 붙여서 더티체킹을 하게해야한다.
+        //하지만 @Transactional은 작업단위를 묶은 용도로 더 많이 사용되기 때문에 이 메서드에서 쓰는것 보단
+        //Controller에서 doModify에 쓰는게 의미상 맞다.
+
+        //postRepository.save(post);  //물론 repository에 @Transactional이 있어서 repository를 쓰면 되긴하다.
     }
 }

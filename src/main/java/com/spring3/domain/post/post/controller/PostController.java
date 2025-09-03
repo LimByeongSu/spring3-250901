@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -75,7 +76,8 @@ public class PostController {
             //@ModelAttribute는 model.addAttribute랑 닮은걸 기억하자. ->
             //@ModelAttribute가 붙은 변수는 스프링이 자동으로 Model로 넘겨서 html에서 사용할 수 있음
             @ModelAttribute("form") PostModifyForm form, 
-            @PathVariable Long id
+            @PathVariable Long id,
+            Model model
     ) {
         Post post = postService.findById(id).get();
 
@@ -83,6 +85,8 @@ public class PostController {
         //그래서 DB에서 꺼내서 수정 전 내용으로 채워넣는다.(post/modify에서 문제가 생겼던 내용임)
         form.setTitle(post.getTitle());
         form.setContent(post.getContent());
+
+        model.addAttribute("post", post);
 
         return "post/modify";
     }
@@ -101,6 +105,7 @@ public class PostController {
     }
 
     @PostMapping("/posts/{id}/modify")
+    @Transactional
     public String doModify(
             @PathVariable Long id,
             @ModelAttribute("form") @Valid PostModifyForm form,
