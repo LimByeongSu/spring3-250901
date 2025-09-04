@@ -10,8 +10,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -34,18 +32,11 @@ public class CommentController {
     @Transactional
     public String write(
             @PathVariable Long  postId,
-            @Valid CommentWriteForm form,    //유효성 체크를 위한 변수
-            BindingResult bindingResult,
-            Model model
+            @Valid CommentWriteForm form    //유효성 체크를 위한 변수
+
     ){
 
         Post post = postService.findById(postId).get();
-
-        if(bindingResult.hasErrors()) {
-            model.addAttribute("post", post);
-            return "post/detail";
-        }
-
 
         postService.writeComment(post, form.getContent());
         //post.addComment(form.content);  //form에있는 content는 어떻게 html에서 받아오는거지?
