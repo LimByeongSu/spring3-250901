@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @NoArgsConstructor
 @Getter
@@ -47,9 +48,19 @@ public class Post extends BaseEntity {
     }
 
     public void deleteComment(Long commentId) {
-        comments.stream()
+        Comment comment = findCommentById(commentId).get();
+        this.comments.remove(comment);
+    }
+
+    public Comment updateComment(Long commentId, String content) {
+        Comment comment = findCommentById(commentId).get();
+        comment.update(content);
+        return comment;
+    }
+
+    public Optional<Comment> findCommentById(Long commentId) {
+        return comments.stream()
                 .filter(c -> c.getId().equals(commentId))
-                .findFirst()
-                .ifPresent(comments::remove);
+                .findFirst();
     }
 }

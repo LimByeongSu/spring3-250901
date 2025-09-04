@@ -23,7 +23,7 @@ public class BaseInitData {
     ApplicationRunner initDataRunner() {
         return args -> {
 
-            self.work1();   //프록시를 거쳐야하기 때문에 self를 씀
+            self.work1();   //프록시를 거처야하기 때문에 self를 씀
 
         };
 
