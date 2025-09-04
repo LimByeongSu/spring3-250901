@@ -19,7 +19,7 @@ public class Post extends BaseEntity {
     private String title;
     private String content;
 
-    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE},orphanRemoval = true, fetch = FetchType.LAZY)
     //PERSIST는 연쇄저장, REMOVE는 연쇄삭제를 의미한다.
     //참고로 cascade는 @Transactional안에서만 작동한다.
 
