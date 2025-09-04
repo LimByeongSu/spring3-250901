@@ -120,6 +120,7 @@ public class PostController {
             return "post/modify";
         }
 
+        //findById와 modify를 묶어서 작업하기 위해 @Transactional을 사용했다.
         Post post = postService.findById(id).get();
         postService.modify( post, form.title, form.content);
         return "redirect:/posts/%d".formatted(post.getId());
@@ -131,6 +132,9 @@ public class PostController {
 
 
     @GetMapping("/posts/{id}")  //상세 보기
+    @Transactional(readOnly = true)  //detail()을 조회의 기능으로만 사용하겠다고 명시하겠다는 의도로 사용
+                                    //혹시나 여기에 update로직을 넣는 경우를 막기 위함
+                                    //두번째 이유는 JPA에서 조회용으로 쓴다고 명시된 것은 좀더 빠르게 작동시켜줌
     public String detail(@PathVariable Long id, Model model) {
         Post post = postService.findById(id).get();
         model.addAttribute("post", post);
@@ -139,6 +143,7 @@ public class PostController {
     }
     
     @GetMapping("/posts")
+    @Transactional(readOnly = true) //
     public String list(Model model){   //글 목록
         List<Post> posts = postService.findAll();
 
