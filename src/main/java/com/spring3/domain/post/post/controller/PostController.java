@@ -5,14 +5,14 @@ import com.spring3.domain.post.post.service.PostService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -26,21 +26,19 @@ public class PostController {
     }
 
 
-    @AllArgsConstructor
-    @Getter
-    public static class PostWriteForm {
-        @NotBlank(message = "01-title-제목을 입력해주세요.")
-        @Size(min = 2, max = 10, message = "02-title-제목은 2글자 이상 10글자 이하로 입력해주세요.")
-        private String title;
-
-        @NotBlank(message = "03-content-내용을 입력해주세요.")
-        @Size(min = 2, max = 100, message = "04-content-내용은 2글자 이상 100글자 이하로 입력해주세요.")
-        private String content;
+    record PostWriteForm(
+            @NotBlank(message = "01-title-제목을 입력해주세요.")
+            @Size(min = 2, max = 10, message = "02-title-제목은 2글자 이상 10글자 이하로 입력해주세요.")
+            String title,
+            @NotBlank(message = "03-content-내용을 입력해주세요.")
+            @Size(min = 2, max = 100, message = "04-content-내용은 2글자 이상 100글자 이하로 입력해주세요.")
+            String content
+    ) {
     }
 
     @GetMapping("/posts/write")
     public String write(@ModelAttribute("form") PostWriteForm form) {
-        return "post/write";
+        return "post/post/write";
     }
 
     @PostMapping("/posts/write")
@@ -54,7 +52,8 @@ public class PostController {
     ) {
 
         if(bindingResult.hasErrors()) {
-            return "post/write";
+            return "post/post/write";
+
         }
 
         Post post = postService.write(form.title, form.content);
@@ -64,18 +63,16 @@ public class PostController {
     }
 
 
-    @AllArgsConstructor
-    @Getter
-    @Setter
-    public static class PostModifyForm {
+
+    record PostModifyForm (
         @NotBlank(message = "01-title-제목을 입력해주세요.")
         @Size(min = 2, max = 10, message = "02-title-제목은 2글자 이상 10글자 이하로 입력해주세요.")
-        private String title;
+        String title,
 
         @NotBlank(message = "03-content-내용을 입력해주세요.")
         @Size(min = 2, max = 100, message = "04-content-내용은 2글자 이상 100글자 이하로 입력해주세요.")
-        private String content;
-    }
+        String content
+){}
 
     @GetMapping("/posts/{id}/modify")
     public String modify(
@@ -87,13 +84,12 @@ public class PostController {
     ) {
 
         Post post = postService.findById(id).get();
-        //맨 처음 들어온다면 수정할 값을 입력한 상태가 아닐테니 form이 비어있다.
-        //그래서 DB에서 꺼내서 수정 전 내용으로 채워넣는다.(post/modify에서 문제가 생겼던 내용임)
-        form.setTitle(post.getTitle());
-        form.setContent(post.getContent());
+
+        PostModifyForm form2 = new PostModifyForm(post.getTitle(), post.getContent());
+        model.addAttribute("form", form2);
 
         model.addAttribute("post", post);
-        return "post/modify";
+        return "post/post/modify";
     }
 
     @PostMapping("/posts/{id}/modify")
@@ -108,7 +104,7 @@ public class PostController {
 
             //model.addAttribute("form", form);
             //@ModelAttribute가 붙어있는건 따로 넘길필요없고 form은 이미 @ModelAttribute가 붙어있다.
-            return "post/modify";
+            return "post/post/modify";
         }
 
         //findById와 modify를 묶어서 작업하기 위해 @Transactional을 사용했다.
@@ -128,7 +124,7 @@ public class PostController {
         Post post = postService.findById(id).get();
         model.addAttribute("post", post);
 
-        return "post/detail";
+        return "post/post/detail";
     }
 
     @GetMapping("/posts")
@@ -137,6 +133,6 @@ public class PostController {
 
         List<Post> posts = postService.findAll();
         model.addAttribute("posts", posts);
-        return "post/list";
+        return "post/post/list";
     }
 }

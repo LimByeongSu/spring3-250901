@@ -7,7 +7,7 @@
 <body>
 <form method="POST"  th:object="${form}">
 
-    <div th:replace="~{post/form_errors :: formErrorsFragment}"></div>
+    <div th:replace="~{post/post/form_errors :: formErrorsFragment}"></div>
 
     <h2>번호 : <th:block th:text="${post.id}"></th:block></h2>
     <div>
