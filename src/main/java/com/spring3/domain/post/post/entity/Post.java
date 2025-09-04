@@ -45,4 +45,11 @@ public class Post extends BaseEntity {
 
         return comment;
     }
+
+    public void deleteComment(Long commentId) {
+        comments.stream()
+                .filter(c -> c.getId().equals(commentId))
+                .findFirst()
+                .ifPresent(comments::remove);
+    }
 }

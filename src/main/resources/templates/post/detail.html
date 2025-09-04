@@ -60,8 +60,12 @@
         <h2>번호 : [[${comment.id}]]</h2>
         <h3>작성일 : [[${comment.createDate}]]</h3>
         <h3>수정일 : [[${comment.modifyDate}]]</h3>
-        <div>내용</div>
+        <h3>내용</h3>
         <div>[[${comment.content}]]</div>
+        <div>
+            <a href="#">수정</a>
+            <a th:href="@{/posts/{postId}/comments/{commentId}/delete(postId=${post.id}, commentId=${comment.id})}">삭제</a>
+        </div>
     </li>
 </ul>
 
