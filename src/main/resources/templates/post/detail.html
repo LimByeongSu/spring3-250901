@@ -20,12 +20,38 @@
 <hr>
 <h2>댓글 작성</h2>
 <!-- 댓글 생성이니까 method속성은 POST여야한다.  --->
-<form th:action="@{/posts/{postId}/comments/write(postId=${post.id})}" method="POST">
+<form th:action="@{/posts/{postId}/comments/write(postId=${post.id})}" method="POST"
+      onsubmit="postComment__submitWriteForm(this); return false;">
     <textarea rows="10" cols="100" name="content" placeholder="댓글 내용을 입력해 주세요"></textarea>
     <div>
     <input type="submit" value="등록">
     </div>
 </form>
+
+<script>
+    function postComment__submitWriteForm(form) {
+        if(form.content.value.length == 0) {
+            alert("댓글 내용을 입력해주세요.");
+            form.content.focus();
+            return false;
+        }
+
+        if(form.content.value.length < 2) {
+            alert("댓글 내용은 2자 이상 입력해주세요.");
+            form.content.focus();
+            return false;
+        }
+
+        if(form.content.value.length > 100) {
+            alert("댓글 내용은 100자 미만으로 입력해주세요.");
+            form.content.focus();
+            return false;
+        }
+
+        form.submit();
+    }
+</script>
+
 
 <hr>
 <h2>댓글 목록</h2>

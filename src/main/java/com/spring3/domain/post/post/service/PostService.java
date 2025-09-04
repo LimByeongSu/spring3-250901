@@ -39,4 +39,8 @@ public class PostService {
 
         //postRepository.save(post);  //물론 repository에 @Transactional이 있어서 repository를 쓰면 되긴하다.
     }
+
+    public void writeComment(Post post, String content) {
+        post.addComment(content);
+    }
 }
