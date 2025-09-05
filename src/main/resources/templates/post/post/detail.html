@@ -64,7 +64,7 @@
         <div>[[${comment.content}]]</div>
         <div>
             <a th:href="@{/posts/{postId}/comments/{commentId}/modify(postId=${post.id}, commentId=${comment.id})}">수정</a>
-            <a method="DELETE" th:href="@{/posts/{postId}/comments/{commentId}/delete(postId=${post.id}, commentId=${comment.id})}" onclick="return confirm('정말 삭제 하시겠습니까?')">삭제</a>
+            <a method="DELETE" th:href="@{/posts/{postId}/comments/{commentId}(postId=${post.id}, commentId=${comment.id})}" onclick="return confirm('정말 삭제 하시겠습니까?')">삭제</a>
         </div>
     </li>
 </ul>

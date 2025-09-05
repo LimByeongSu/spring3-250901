@@ -43,7 +43,7 @@ public class CommentController {
         return "post/comment/modify";
     }
 
-    @PutMapping("/posts/{postId}/comments/{commentId}/modify")
+    @PutMapping("/posts/{postId}/comments/{commentId}")
     @Transactional
     public String doModify(
             @PathVariable Long postId,
@@ -76,7 +76,7 @@ public class CommentController {
     }
 
 
-    @DeleteMapping("/posts/{postId}/comments/{commentId}/delete")
+    @DeleteMapping("/posts/{postId}/comments/{commentId}")
     @Transactional
     public String doDelete(
             @PathVariable Long postId,

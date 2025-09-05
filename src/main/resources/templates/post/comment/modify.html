@@ -12,7 +12,7 @@
 
 <h4>수정일 : [[${comment.modifyDate}]]</h4>
 
-<form th:href="@{/posts/{postId}/comments/{commentId}/modify(postId=${post.id}, commentId=${comment.id})}" method="POST"
+<form th:action="@{/posts/{postId}/comments/{commentId}(postId=${post.id}, commentId=${comment.id})}" method="POST"
       onsubmit="postComment__submitWriteForm(this); return false;">
         <input type="hidden" name="_method" value="PUT">
     <textarea rows="10" cols="100" name="content" placeholder="댓글 내용을 입력해주세요.">[[${comment.content}]]</textarea>
