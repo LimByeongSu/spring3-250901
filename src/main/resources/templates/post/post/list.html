@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>글 목록</title>
-</head>
-<body>
-<h1> 글 목록</h1>
-<ul>
-    <!-- 반복문은 th:each이다. --->
-    <li th:each="post : ${posts}">
-        <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.id} + '. ' + ${post.title}"></a> <!-- 1 . 안녕하세요--->
-    </li>
-</ul>
-</body>
-</html>
+
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+
+    <h1>글 목록</h1>
+    <ul>
+        <li th:each="post : ${posts}">
+            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.id} + '. ' + ${post.title}"></a>
+        </li>
+    </ul>
+
+</div>

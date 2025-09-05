@@ -1,12 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
 
-
+<th:block layout:fragment="content">
 
 <form method="POST" th:object="${form}">
     <!-- post/form_errors의  formErrorsFragment로 replace한다.--->
@@ -25,5 +20,5 @@
     <input type="submit" value="작성">
 </form>
 
-</body>
+</th:block>
 </html>

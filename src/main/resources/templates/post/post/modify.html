@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+
+<th:block layout:fragment="content">
+
 <form method="POST" th:action="@{/posts/{postId}(postId=${post.id})}" th:object="${form}">
 
     <div th:replace="~{post/post/form_errors :: formErrorsFragment}"></div>
@@ -25,5 +23,7 @@
     </div>
     <input type="submit" value="수정 완료">
 </form>
-</body>
+
+</th:block>
+
 </html>
