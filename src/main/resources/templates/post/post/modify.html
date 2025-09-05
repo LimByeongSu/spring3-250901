@@ -5,10 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-<form method="POST"  th:object="${form}">
+<form method="POST" th:action="@{/posts/{postId}(postId=${post.id})}" th:object="${form}">
 
     <div th:replace="~{post/post/form_errors :: formErrorsFragment}"></div>
 
+    <input type="hidden" name="_method" value="PUT">
     <h2>번호 : <th:block th:text="${post.id}"></th:block></h2>
     <div>
         <label for="">제목</label>
