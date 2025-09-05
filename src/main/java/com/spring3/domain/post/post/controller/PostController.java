@@ -111,6 +111,19 @@ public class PostController {
         return "redirect:/posts/%d".formatted(post.getId());
     }
 
+    @DeleteMapping("/posts/{id}")
+    @Transactional
+    public String doDelete(
+            @PathVariable Long id
+    ) {
+
+        Post post = postService.findById(id).get();
+        postService.delete(post);
+
+        return "redirect:/posts";
+
+    }
+
 
     @GetMapping("/posts/{id}")  //상세 보기
     @Transactional(readOnly = true)  //detail()을 조회의 기능으로만 사용하겠다고 명시하겠다는 의도로 사용

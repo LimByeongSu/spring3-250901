@@ -18,7 +18,7 @@
 <div>
     <a th:href="@{/posts}">글 목록</a>
     <a th:href="@{/posts/{id}/modify(id=${post.id})}">수정</a>
-    <a th:href="@{/posts/{id}/delete(id=${post.id})}">삭제</a>
+    <a method="DELETE" th:href="@{/posts/{id}(id=${post.id})}">삭제</a>
 </div>
 <hr>
 <h2>댓글 작성</h2>
